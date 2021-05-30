@@ -1,18 +1,19 @@
 #############      author => Anubis Graduation Team        ############
 #############      this project is part of my graduation project and it intends to make a fully functioned IDE from scratch    ########
 #############      I've borrowed a function (serial_ports()) from a guy in stack overflow whome I can't remember his name, so I gave hime the copyrights of this function, thank you  ########
-
-
+import os
 import sys
 import glob
 import serial
 
+import CS_Coloring
 import Python_Coloring
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from pathlib import Path
+
 
 def serial_ports():
     """ Lists serial port names
@@ -88,7 +89,6 @@ class text_widget(QWidget):
     def itUI(self):
         global text
         text = QTextEdit()
-        Python_Coloring.PythonHighlighter(text)
         hbox = QHBoxLayout()
         hbox.addWidget(text)
         self.setLayout(hbox)
@@ -114,6 +114,9 @@ class text_widget(QWidget):
 #
 class Widget(QWidget):
 
+
+
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -125,7 +128,7 @@ class Widget(QWidget):
         tx = text_widget()
         tab.addTab(tx, "Tab"+"1")
 
-        # second editor in which the error messeges and succeeded connections will be shown
+        # second editor in which the error messages and succeeded connections will be shown
         global text2
         text2 = QTextEdit()
         text2.setReadOnly(True)
@@ -185,9 +188,17 @@ class Widget(QWidget):
     # defining a new Slot (takes string) to save the text inside the first text editor
     @pyqtSlot(str)
     def Saving(s):
-        with open('main.py', 'w') as f:
-            TEXT = text.toPlainText()
-            f.write(TEXT)
+
+        if(extension=="py"):
+            with open('main.py', 'w') as f:
+                TEXT = text.toPlainText()
+                f.write(TEXT)
+        elif(extension=="cs"):
+            with open('main.cs', 'w') as f:
+                TEXT = text.toPlainText()
+                f.write(TEXT)
+
+
 
     # defining a new Slot (takes string) to set the string to the text editor
     @pyqtSlot(str)
@@ -199,6 +210,17 @@ class Widget(QWidget):
 
         nn = self.sender().model().filePath(index)
         nn = tuple([nn])
+        global extension
+        extension = os.path.splitext(nn[0])[1]
+
+        if (extension == ".py"):
+            Python_Coloring.PythonHighlighter(text)
+
+        elif (extension == ".cs"):
+            CS_Coloring.CsharpHighlighter(text)
+
+        else:
+            print("Please choose a valid file type")
 
         if nn[0]:
             f = open(nn[0],'r')
@@ -275,9 +297,6 @@ class UI(QMainWindow):
         # adding the menu which I made to the original (Port menu)
         Port.addMenu(Port_Action)
 
-#        Port_Action.triggered.connect(self.Port)
-#        Port.addAction(Port_Action)
-
         # Making and adding Run Actions
         RunAction = QAction("Run", self)
         RunAction.triggered.connect(self.Run)
@@ -343,6 +362,12 @@ class UI(QMainWindow):
     # I made this function to open a file and exhibits it to the user in a text editor
     def open(self):
         file_name = QFileDialog.getOpenFileName(self,'Open File','/home')
+        extension = os.path.splitext(file_name[0])[1]
+
+        if extension == ".py":
+            Python_Coloring.PythonHighlighter(text)
+        elif(extension == ".cs"):
+            CS_Coloring.CsharpHighlighter(text)
 
         if file_name[0]:
             f = open(file_name[0],'r')
