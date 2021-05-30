@@ -52,8 +52,7 @@ STYLES = {
 # Syntax highlighter for C# language.
 class CsharpHighlighter(QSyntaxHighlighter):
     # C# keywords
-    keywords = [
-        'var', 'abstract', 'as', 'base', 'bool'
+    keywords = ['var', 'abstract', 'as', 'base', 'bool'
         , 'break', 'byte', 'case', 'catch'
         , 'char', 'checked', 'class', 'const'
         , 'continue', 'decimal', 'default', 'delegate'
@@ -67,13 +66,12 @@ class CsharpHighlighter(QSyntaxHighlighter):
         , 'out', 'override', 'params', 'private'
         , 'protected', 'public', 'readonly', 'ref'
         , 'return', 'sbyte', 'sealed', 'short',
-        'sizeof', 'stackalloc', 'static', 'string'
+                      'sizeof', 'stackalloc', 'static', 'string'
         , 'struct', 'switch', 'this', 'throw'
         , 'true', 'try', 'typeof', 'uint'
         , 'ulong', 'unchecked', 'unsafe', 'ushort'
         , 'using', 'virtual', 'void', 'volatile'
-        , 'while'
-    ]
+        , 'while']
 
     # C# operators
     operators = [
@@ -85,6 +83,9 @@ class CsharpHighlighter(QSyntaxHighlighter):
         # In-place
         '\+=', '-=', '\*=', '/=', '\%=',
         # Bitwise
+        '\^', '\|', '\&', '\~', '>>', '<<',
+
+        # Bitwise and Bit shift
         '\^', '\|', '\&', '\~', '>>', '<<',
     ]
 
@@ -125,8 +126,8 @@ class CsharpHighlighter(QSyntaxHighlighter):
             # 'class' followed by an identifier
             (r'\bclass\b\s*(\w+)', 1, STYLES['defclass']),
 
-            # From '#' until a newline
-            (r'#[^\n]*', 0, STYLES['comment']),
+            # From '//' until a newline
+            (r'//[^\n]*', 0, STYLES['comment']),
 
             # Numeric literals
             (r'\b[+-]?[0-9]+[lL]?\b', 0, STYLES['numbers']),
