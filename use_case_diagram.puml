@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+User --> (Open file)
+User --> (Save file)
+User --> (Write code)
+User --> (Run)
+(Write code) ..> (format .py text): <<include>>
+(Write code) ..> (format .cs text): <<include>>
+(Open file) ..> (Open .py file): <<include>>
+(Open file) ..> (Open .cs file): <<include>>
+(Save file) ..> (Save as .py file): <<include>>
+(Save file) ...> (Save a .cs file): <<include>>
+
+(Run) <.. (build code): <<extend>>
+
+
+
+
+
+
+@enduml

@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor actor as user
+
+
+user -> Application: run app
+Application -> UI: intUI()
+UI->Signal:signal()
+UI->Widget: widget()
+Widget -> text_widget: itUI()
+user -> Application: click run
+Application -> UI: Run()
+alt port_flag==0
+UI -> Application: "Sorry there is no attached compiler"
+
+else No port is selected
+UI -> Application: "Please Select Your Port Number First"
+user -> Application: choose port
+Application -> UI: PortClicked()
+end
+
+user -> Application: click save .py file
+Application -> UI: Save()
+UI -> Signal: _ _init_ _()
+Signal -> Widget: Saving()
+Widget --> Application: File saved as main.py
+
+user -> Application: click save .cs file
+Application -> UI: Save()
+UI -> Signal: _ _init_ _()
+Signal -> Widget: Saving()
+Widget --> Application: File saved as main.cs
+
+user -> Application: click open .py file
+Application -> UI: open()
+UI -> UI: intUI()
+UI -> Signal: _ _init_ _()
+Signal -> Widget: Open()
+Widget -> PythonHighlighter: highlightBlock()
+PythonHighlighter -> PythonHighlighter: match_multiline()
+PythonHighlighter --> Application: File opened
+
+user -> Application: click open .cs file
+Application -> UI: open()
+UI -> UI: intUI()
+UI -> Signal: _ _init_ _()
+Signal -> Widget: Open()
+Widget -> CSharpHighlighter: highlightBlock()
+CSharpHighlighter -> CSharpHighlighter: match_multiline()
+CSharpHighlighter --> Application: File opened
+
+user -> Application: click on .py file
+Application -> Widget: on_clicked()
+Widget -> PythonHighlighter: highlightBlock()
+PythonHighlighter -> PythonHighlighter: match_multiline()
+PythonHighlighter --> Application: Display file content
+
+user -> Application: click on .cs file
+Application -> Widget: on_clicked()
+Widget -> CSharpHighlighter: highlightBlock()
+CSharpHighlighter -> CSharpHighlighter: match_multiline()
+CSharpHighlighter --> Application: Display file content
+@enduml

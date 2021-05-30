@@ -1,0 +1,79 @@
+@startuml
+class PyQt5.QtCore.QObject.QObject
+class PyQt5.QtWidgets.QWidget.QWidget
+class PyQt5.QtWidgets.QMainWindow.QMainWindow
+class PyQt5.QtGui.QSyntaxHighlighter
+
+class Signal{
+String reading
+__init__()
+}
+
+class text_widget{
+    __init__()
+    itUI()
+}
+
+class Widget{
+    QFileSystemModel dirModel
+    QTreeView treeview
+    __init()
+    initUI()
+    Saving(String)
+    Open(String)
+    on_click(int)
+}
+
+class UI{
+Signal b
+Signal Open_Signal
+int port_flag
+String portNo
+
+__init__()
+intUI()
+Run()
+PortClicked()
+save()
+open()
+}
+
+class PythonHighlighter{
+String[] keywords
+String[] operators
+String[] braces
+QRegExp[] rules
+String tri_single
+String tri_double
+
+__init__(file)
+highlightblock(String)
+match_multiliner(String, String, String, int)
+}
+
+class CSharpHighlighter{
+String[] keywords
+String[] operators
+String[] braces
+QRegExp[] rules
+String tri_single
+String tri_double
+
+__init__(file)
+highlightblock(String)
+match_multiliner(String, String, String, int)
+}
+
+PyQt5.QtCore.QObject.QObject <|-- Signal
+PyQt5.QtWidgets.QWidget.QWidget <|-- text_widget
+PyQt5.QtWidgets.QWidget.QWidget <|-- Widget
+PyQt5.QtWidgets.QMainWindow.QMainWindow <|-- UI
+PyQt5.QtGui.QSyntaxHighlighter <|-- PythonHighlighter
+PyQt5.QtGui.QSyntaxHighlighter <|-- CSharpHighlighter
+
+UI *-- Signal
+UI *-- Widget
+PythonHighlighter *-- text_widget
+CSharpHighlighter *-- text_widget
+text_widget *-- Widget
+@enduml
